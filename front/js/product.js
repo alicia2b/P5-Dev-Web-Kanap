@@ -43,7 +43,7 @@ if (quantity<=0 || quantity>100|| color==''){
       {
         cartItems.push({
           id:id,
-          color:color,  
+          color:color,
           quantity:quantity,
         });
       }
