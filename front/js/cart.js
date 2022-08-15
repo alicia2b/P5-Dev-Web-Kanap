@@ -135,27 +135,37 @@ submitbutton.addEventListener('click', e => {
   }
   
  if (errorFirstName.innerText=='' && errorLastName.innerText==''&& errorAddress.innerText==''&& errorCity.innerText=='' && errorEmail.innerText==''){
-  alert('Votre commande est enregistrée');
- }
- let contact={};
+    const productsIds = cartItems.map(product => product.id);
+   let contact={
+    firstName: inputFirstName.value,
+    lastName:inputLastName.value,
+    address:inputAddress.value,
+    city:inputCity.value,
+    email:inputEmail.value
+   };
+   console.log(productsIds,contact)
+  fetch("http://localhost:3000/api/products/order", {
+           
+             method: "POST",
+             body:JSON.stringify({ products: productsIds, contact:contact}),
+             headers: {
+                 "Content-Type": "application/json",
+             }
+         })    
+         .then((response) => {
+             return response.json();
+         })
+         .then((data) => {
+             localStorage.removeItem('cart');
+           window.location.href = `confirmation.html?id=${data.orderId}`;
+         });
+         alert('Votre commande est enregistrée');
+     };
  
- const productsIds = cartItems.map(product => product.id);
- fetch("http://localhost:3000/api/products/order", {
-          
-            method: "POST",
-            body:JSON.stringify({ products: productsIds, contact:contact}),
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })    
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            localStorage.removeItem(cartItems);
-            window.location.href = `confirmation.html?id=${data.orderId}`;
-        });
-    });
+ 
+ });
+ 
+ 
 
 
 
